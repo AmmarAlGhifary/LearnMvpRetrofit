@@ -23,4 +23,7 @@ public interface FootballDao {
 
     @Query("SELECT * FROM teams ORDER BY strTeam ASC")
     List<TeamData> selectFavorite();
+
+    @Query("SELECT * FROM teams WHERE strTeam = :teams")
+    TeamData selectedItemSearch(String teams);
 }
