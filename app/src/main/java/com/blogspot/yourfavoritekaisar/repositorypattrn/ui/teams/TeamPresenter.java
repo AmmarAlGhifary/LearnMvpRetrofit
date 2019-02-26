@@ -42,4 +42,34 @@ public class TeamPresenter implements TeamContract.Presenters {
             }
         });
     }
+
+    @Override
+    public void getSearchTeams(String searchText) {
+       // Mengecek apakah intputan user ada isinya?
+        if (!searchText.isEmpty()){
+            // Apabila ada lakukan request ke APi
+            view.showProgress();
+            Call<TeamResponse> call = apiInterface.getSearchTeams(searchText);
+            call.enqueue(new Callback<TeamResponse>() {
+                @Override
+                public void onResponse(Call<TeamResponse> call, Response<TeamResponse> response) {
+                    view.hideProgress();
+                    if (response.body() != null){
+                        view.showDataList(response.body().getTeams());
+                    }else {
+                        view.showFailureMessage("tidak ada team dengan nama tersebut");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<TeamResponse> call, Throwable t) {
+                    view.hideProgress();
+                    view.showFailureMessage(t.getMessage());
+                }
+            });
+        }else {
+            // Apabila kosong maka lakukan pengambilan data teams tanpa search
+            getDataListTeams();
+        }
+    }
 }

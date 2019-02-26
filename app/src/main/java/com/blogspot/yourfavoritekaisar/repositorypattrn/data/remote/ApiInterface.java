@@ -14,4 +14,9 @@ public interface ApiInterface {
     );
 
 
+    //  END POINT BUAT NGESEARCH
+    @GET("searchteams.php")
+    Call<TeamResponse> getSearchTeams (@Query("t")String t);
+
+
 }

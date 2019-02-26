@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.blogspot.yourfavoritekaisar.repositorypattrn.R;
@@ -33,6 +35,10 @@ public class TeamsFragment extends Fragment implements TeamContract.View {
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
     Unbinder unbinder;
+    @BindView(R.id.edtSearch)
+    EditText edtSearch;
+    @BindView(R.id.btnSearch)
+    ImageButton btnSearch;
     private ProgressDialog progressDialog;
     private TeamPresenter teamsPresenter = new TeamPresenter(this);
 
@@ -58,7 +64,20 @@ public class TeamsFragment extends Fragment implements TeamContract.View {
             }
         });
 
+        setUpUIListener();
         return view;
+    }
+
+    private void setUpUIListener() {
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // Membuat inputan user yang ada di dalam edtTxt
+                String searchText = edtSearch.getText().toString().toLowerCase();
+                // Kirim Inputan user ke presenter untuk di request ke API
+                teamsPresenter.getSearchTeams(searchText);
+            }
+        });
     }
 
     @Override
